@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 import Title from "../Title/Title";
@@ -7,11 +7,10 @@ import Input from "../Input/Input";
 import Button from "../../Button/Button";
 import { FaFacebook } from "react-icons/fa";
 import GoogleAuth from "../GoogleAuth/GoogleAuth";
-import useHandleChange from "../../Hooks/HandleInputChange";
 
 const Login = () => {
-  const [email, setEmail] = useHandleChange();
-  const [password, setPassword] = useHandleChange();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isAuth, setAuth] = useState(false);
 
@@ -24,9 +23,6 @@ const Login = () => {
 
     console.log(formData);
 
-    setEmail("");
-    setPassword("");
-
     /**
      * To make the api call to post the user data once submitted
      * below is example of success and failure cases
@@ -34,8 +30,12 @@ const Login = () => {
 
     if (email === "app@devagram.com" && password === "devagram2020") {
       setAuth(true);
+      setEmail("");
+      setPassword("");
     } else {
       setError("Invalid credentials");
+      setEmail("");
+      setPassword("");
       setTimeout(() => {
         setError("");
       }, 5000);
@@ -47,7 +47,7 @@ const Login = () => {
   }
 
   return (
-    <Fragment>
+    <>
       <div className={classes.Login}>
         <Title title="Devagram" />
         {error && (
@@ -57,7 +57,7 @@ const Login = () => {
           <Input
             type="email"
             value={email}
-            onChange={setEmail}
+            onChange={(e) => setEmail(e.target.value)}
             name="email"
             required
             aria-labelledby="label-email"
@@ -65,7 +65,7 @@ const Login = () => {
           <Input
             type="password"
             value={password}
-            onChange={setPassword}
+            onChange={(e) => setPassword(e.target.value)}
             name="password"
             required
             aria-labelledby="label-password"
@@ -86,10 +86,10 @@ const Login = () => {
           </Button>
         </div>
       </div>
-      <section>
-        Already have Account ? <Link to="/signup">Signup</Link>
+      <section className="section-bar">
+        Create new account ? <Link to="/signup">Signup</Link>
       </section>
-    </Fragment>
+    </>
   );
 };
 
